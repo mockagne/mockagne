@@ -1,4 +1,6 @@
 --- Mockagne - Lua Mock Library
+-- https://github.com/PunchWolf/mockagne
+--
 -- @copyright PunchWolf
 -- @author Janne Sinivirta
 -- @author Marko Pukari

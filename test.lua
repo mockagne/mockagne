@@ -1,11 +1,12 @@
+--- Mockagne - Lua Mock Library
+-- https://github.com/PunchWolf/mockagne
+--
+-- @copyright PunchWolf
+-- @author Janne Sinivirta
+-- @author Marko Pukari
+
 package.path = package.path .. ";../lunatest/?.lua"
 
---
--- Author: PunchWolf
--- Author: Janne Sinivirta
--- Author: Marko Pukari
--- Date: 1/7/13
---
 
 require "mockagne"
 require "lunatest"
