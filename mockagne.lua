@@ -4,11 +4,12 @@
 -- @copyright PunchWolf
 -- @author Janne Sinivirta
 -- @author Marko Pukari
-module(..., package.seeall);
+
+local M = {}
 
 local latest_invoke = {}
 
-function deepcompare(t1,t2,ignore_mt)
+local function deepcompare(t1,t2,ignore_mt)
     local ty1 = type(t1)
     local ty2 = type(t2)
 
@@ -178,7 +179,7 @@ local function describeAllInvokes(mock)
     return description
 end
 
-function do_verify(mockinvoke)
+local function do_verify(mockinvoke)
     remove_invoke(latest_invoke.mock, latest_invoke.key, unpack(latest_invoke.args)) -- remove invocation made for verify
     local stored_calls = latest_invoke.mock.stored_calls
     for i = 1, #stored_calls do
@@ -191,14 +192,14 @@ function do_verify(mockinvoke)
 end
 
 --- Verify that a given invocation happened
-function verify(mockinvoke)
+function M.verify(mockinvoke)
     if not do_verify(mockinvoke) then
         error("Expected call to " .. describeInvoke(latest_invoke) .. " but no invocation made.\nCaptured invokes:\n" .. describeAllInvokes(latest_invoke.mock))
     end
 end
 
 --- Verify that a given invocation did not happen
-function verify_no_call(mockinvoke)
+function M.verify_no_call(mockinvoke)
     if do_verify(mockinvoke) then
         error("Expected no call to " .. describeInvoke(latest_invoke) .. " but an invocation was made.")
     end
@@ -207,7 +208,7 @@ end
 --- Returns a mock instance
 -- @param name name for the mock (optional)
 -- @return mock instance
-function getMock(name)
+function M.getMock(name)
     mock = { stored_calls = {}, expected_returns = {} }
 
     mt = { __index = capture }
@@ -224,12 +225,12 @@ end
 --- Used for teaching mock to return values with specific invocation
 -- @param fcall function call expected to have a return value
 -- @return table with thenAnswer function that is used to set the return value
-function when(fcall)
+function M.when(fcall)
     return { thenAnswer = thenAnswer }
 end
 
 --- Used to describe calls to mocks with parameters that don't matter (ie. can be any type)
-function anyType(item)
+function M.anyType(item)
     local mockType = {}
     mockType.anyType = true
 
@@ -240,3 +241,4 @@ function anyType(item)
     return mockType
 end
 
+return M

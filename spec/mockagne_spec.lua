@@ -7,7 +7,7 @@
 
 package.path = package.path .. ";../?.lua"
 
-require "mockagne"
+local mockagne = require "mockagne"
 
 local t = nil
 local when = mockagne.when

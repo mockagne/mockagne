@@ -7,7 +7,7 @@ Fully dynamic mocking for Lua.
 ### Creating and using mocks
 Start by requiring mockagne and creating some local function references for better readability:
 
-    require "mockagne"
+    local mockagne = require "mockagne"
     
     local when = mockagne.when
     local any = mockagne.anyType
