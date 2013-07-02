@@ -153,8 +153,32 @@ local function getName(self)
     return self.mockname
 end
 
---- Verify that a given invocation happened
-function verify(mockinvoke)
+local function describeArgs(mock, args)
+    local description = ""
+    for i,v in ipairs(args) do
+        if (i == 1 and v == mock) then description = description .. "self"
+        else description = description .. tostring(v) end
+        if i < #args then description = description .. ", " end
+    end
+    return description
+end
+
+local function describeInvoke(capture, suppliedMock)
+    local mock = capture.mock or suppliedMock
+    return tostring(capture.key) .. "(" .. describeArgs(mock, capture.args) .. ")"
+end
+
+local function describeAllInvokes(mock)
+    local description = "  "
+    local stored_calls = mock.stored_calls
+    for i = 1, #stored_calls do
+        local invocation = stored_calls[i]
+        description = description .. describeInvoke(invocation, mock) .. "\n  "
+    end
+    return description
+end
+
+function do_verify(mockinvoke)
     remove_invoke(latest_invoke.mock, latest_invoke.key, unpack(latest_invoke.args)) -- remove invocation made for verify
     local stored_calls = latest_invoke.mock.stored_calls
     for i = 1, #stored_calls do
@@ -163,7 +187,21 @@ function verify(mockinvoke)
             return true
         end
     end
-    error("No invocation made")
+    return false
+end
+
+--- Verify that a given invocation happened
+function verify(mockinvoke)
+    if not do_verify(mockinvoke) then
+        error("Expected call to " .. describeInvoke(latest_invoke) .. " but no invocation made.\nCaptured invokes:\n" .. describeAllInvokes(latest_invoke.mock))
+    end
+end
+
+--- Verify that a given invocation did not happen
+function verify_no_call(mockinvoke)
+    if do_verify(mockinvoke) then
+        error("Expected no call to " .. describeInvoke(latest_invoke) .. " but an invocation was made.")
+    end
 end
 
 --- Returns a mock instance
