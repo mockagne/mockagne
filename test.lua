@@ -21,9 +21,10 @@ function setup()
 end
 
 function test_no_argument_function()
-	t.foo()
+	local returns = t.foo()
 
 	verify(t.foo())
+	assert_equal(nil, returns)
 end
 
 function test_no_invocation()
