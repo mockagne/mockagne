@@ -198,15 +198,16 @@ end
 -- @param name name for the mock (optional)
 -- @return mock instance
 function M.getMock(name)
-    mock = { stored_calls = {}, expected_returns = {} }
+    mock = { 
+        mockname = name or "",
+        type = "mock",
+        stored_calls = {},
+        expected_returns = {},
+        expect = expect,
+        getName = getName
+    }
 
-    mt = { __index = capture }
-    setmetatable(mock, mt)
-    mock.expect = expect
-    mock.getName = getName
-
-    mock.mockname = name or ""
-    mock.type = "mock"
+    setmetatable(mock, { __index = capture })
 
     return mock
 end
