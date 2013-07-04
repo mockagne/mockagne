@@ -84,11 +84,9 @@ local function compareArgs(args1, args2, strict)
 end
 
 local function getReturn(self, method, ...)
-    local args = {...}
-
     for i = 1, #self.expected_returns do
         local candidate = self.expected_returns[i]
-        if (candidate.mock == self and candidate.key == method and compareArgs(args, candidate.args)) then
+        if (candidate.mock == self and candidate.key == method and compareArgs({...}, candidate.args)) then
             return unpack(candidate.returnvalue)
         end
     end
@@ -123,8 +121,7 @@ local function capture(reftable, refkey)
 end
 
 local function remove_invoke(mock, method, ...)
-    local args = {...}
-    local found, i = find_invoke(mock, method, args, true)
+    local found, i = find_invoke(mock, method, {...}, true)
     if found then
         if (found.count > 1) then found.count = found.count - 1
         else table.remove(mock.stored_calls, i) end
@@ -132,14 +129,13 @@ local function remove_invoke(mock, method, ...)
 end
 
 local function expect(self, method, returnvalue, ...)
-    local args = {...}
-    local expectation = { mock = self, key = method, returnvalue = returnvalue, args = args }
+    local expectation = { mock = self, key = method, returnvalue = returnvalue, args = {...} }
 
     table.insert(self.expected_returns, expectation)
 end
 
 local function thenAnswer(...)
-    latest_invoke.mock:expect(latest_invoke.key, arg, unpack(latest_invoke.args))
+    latest_invoke.mock:expect(latest_invoke.key, {...}, unpack(latest_invoke.args))
     remove_invoke(latest_invoke.mock, latest_invoke.key, unpack(latest_invoke.args))
 end
 
