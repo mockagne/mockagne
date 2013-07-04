@@ -10,7 +10,7 @@ Start by requiring mockagne and creating some local function references for bett
     local mockagne = require "mockagne"
     
     local when = mockagne.when
-    local any = mockagne.anyType
+    local any = mockagne.any
     local verify = mockagne.verify
 
 Then just create a mock instance for you:

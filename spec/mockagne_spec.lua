@@ -11,7 +11,7 @@ local mockagne = require "mockagne"
 
 local t = nil
 local when = mockagne.when
-local any = mockagne.anyType
+local any = mockagne.any
 local verify = mockagne.verify
 local verify_no_call = mockagne.verify_no_call
 

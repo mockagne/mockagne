@@ -36,21 +36,21 @@ local function deepcompare(t1,t2,ignore_mt)
 end
 
 
-local function compareToAnyType(any, value)
+local function compareToAny(any, value)
     if not any.itemType then return true end
-    if type(value) == "table" and value.anyType and any.itemType == value.itemType then return true end
+    if type(value) == "table" and value.any and any.itemType == value.itemType then return true end
     if any.itemType == type(value) then return true end
 
     return false
 end
 
-local function anyTypeMatch(v1, v2)
-    if type(v1) == "table" and v1.anyType then
-        if compareToAnyType(v1, v2) then return true end
+local function anyMatch(v1, v2)
+    if type(v1) == "table" and v1.any then
+        if compareToAny(v1, v2) then return true end
     end
 
-    if type(v2) == "table" and v2.anyType then
-        if compareToAnyType(v2, v1) then return true end
+    if type(v2) == "table" and v2.any then
+        if compareToAny(v2, v1) then return true end
     end
 
     return false
@@ -62,7 +62,7 @@ local function compareValues(v1, v2, strict)
     end
 
     if not strict then
-        if anyTypeMatch(v1, v2) then return true, true end -- second true implies that anytypes were used
+        if anyMatch(v1, v2) then return true, true end -- second true implies that any's were used
     end
     if type(v1) ~= type(v2) then return false end
 
@@ -72,15 +72,15 @@ end
 local function compareArgs(args1, args2, strict)
     if #args1 ~= #args2 then return false end
 
-    local anyTypesUsed = false
+    local anysUsed = false
     for i, v1 in ipairs(args1) do
         local match, anyUsed = compareValues(v1, args2[i], strict)
         if not match then
             return false
         end
-        if anyUsed then anyTypesUsed = true end
+        if anyUsed then anysUsed = true end
     end
-    return true, anyTypesUsed
+    return true, anysUsed
 end
 
 local function getReturn(self, method, ...)
@@ -222,10 +222,11 @@ function M.when(fcall)
     return { thenAnswer = thenAnswer }
 end
 
---- Used to describe calls to mocks with parameters that don't matter (ie. can be any type)
-function M.anyType(item)
+--- Any matcher. Used to describe calls to mocks with parameters that don't matter (ie. can be anything)
+-- @param item if item is given, it's type will be used as a constraint. For example if item is a table, only tables will be accepted by this any
+function M.any(item)
     local mockType = {}
-    mockType.anyType = true
+    mockType.any = true
 
     if item then
         mockType.itemType = type(item)
