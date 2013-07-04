@@ -13,6 +13,7 @@ local t = nil
 local when = mockagne.when
 local any = mockagne.anyType
 local verify = mockagne.verify
+local verify_no_call = mockagne.verify_no_call
 
 describe("When testing mockagne", function ()
 	before_each(function()
@@ -63,6 +64,22 @@ describe("When testing mockagne", function ()
 		t.foo(variable)
 
 		verify(t.foo(variable))
+	end)
+
+	it("verify no call when no call made", function()
+		verify_no_call(t.foo())
+	end)
+
+	it("verify no call when a call is made", function()
+		t.foo("bar")
+
+		assert.has_error(function() verify_no_call(t.foo("bar")) end)
+	end)
+
+	it("verify no call with anytype", function()
+		t.foo("bar")
+
+		assert.has_error(function() verify_no_call(t.foo(any())) end)
 	end)
 
 	it("empty anyType with one parameter", function()
@@ -140,7 +157,7 @@ describe("When testing mockagne", function ()
 	it("wrong function name", function()
 		t.foo("bar")
 
-		assert.has_error(function() verify(t.dork("bar")) end)
+		assert.has_error(function() verify(t.quux("bar")) end)
 	end)
 
 	it("wrong table argument", function()
@@ -152,98 +169,103 @@ describe("When testing mockagne", function ()
 		assert.has_error(function() verify(t.foo(wrong_variable)) end)
 	end)
 
-	it("return string", function()
-		t:expect("foo", "returnz", "bar")
+	describe("using when and thenAnswer", function()
+		it("returns expected value", function()
+			when(t.foo("bar")).thenAnswer("baz")
 
-		assert.equal("returnz", t.foo("bar"))
+			assert.equal("baz", t.foo("bar"))
+		end)
+
+		it("returns expected values for different inputs", function()
+			when(t.foo("bar")).thenAnswer("baz")
+			when(t.foo("baz")).thenAnswer("quux")
+
+			assert.equal("quux", t.foo("baz"))
+			assert.equal("baz", t.foo("bar"))
+		end)
+
+		it("returns expected value with no arguments", function()
+			when(t.foo()).thenAnswer("baz")
+
+			assert.equal("baz", t.foo())
+		end)
+
+		it("returns table", function()
+			local myTable = {name = "foozz"}
+			when(t.foo()).thenAnswer(myTable)
+
+			assert.equal(myTable, t.foo())
+		end)
+
+		it("thenAnswer with no arg", function()
+			when(t.foo()).thenAnswer("baz")
+
+			assert.equal("baz", t.foo())
+		end)
+
+		it("thenAnswer cleans verify", function()
+			when(t.foo()).thenAnswer("baz")
+
+			assert.has_error(function() verify(t.foo()) end)
+		end)
+
+		it("thenAnswer with table arg", function()
+			local variable = {name = "var"}
+
+			when(t.foo()).thenAnswer(variable)
+
+			assert.equal(variable, t.foo())
+		end)
+
+		it("thenAnswer return nil", function()
+			when(t.foo()).thenAnswer(nil)
+
+			assert.falsy(t.foo())
+		end)
+
+		it("when with anyType", function()
+			when(t.foo(any())).thenAnswer("boo")
+
+			assert.equal("boo", t.foo("baz"))
+		end)
+
+		it("when with two anyTypes", function()
+			when(t.foo(any(), any())).thenAnswer("boo")
+
+			assert.equal("boo", t.foo("baz", 5))
+		end)
+
+		it("when with anyType and real argument", function()
+			when(t.foo(any(), 5)).thenAnswer("boo")
+
+			assert.equal("boo", t.foo("baz", 5))
+		end)
+
+		it("when with self", function()
+			when(t.foo(t)).thenAnswer("boo")
+
+			assert.equal("boo", t.foo(t))
+		end)
+		it("thenAnswer with vararg return", function()
+			when(t.foo("bar")).thenAnswer("foo", "bar", "baz")
+
+			a, b, c = t.foo("bar")
+			assert.equal("foo", a)
+			assert.equal("bar", b)
+			assert.equal("baz", c)
+		end)
 	end)
+	
+	describe("mocks have names", function()
+		it("getName return name", function()
+			local namedMock = mockagne.getMock("mockname")
 
-	it("return table", function()
-		local variable = {name = "var"}
+			assert.equal("mockname", namedMock:getName())
+		end)
 
-		t:expect("foo", variable, "bar")
-
-		assert.equal(variable, t.foo("bar"))
-	end)
-
-	it("returns for multiple", function()
-		t:expect("foo", "return1", "bar")
-		t:expect("foo", "return2", "baz")
-
-		assert.equal("return1", t.foo("bar"))
-		assert.equal("return2", t.foo("baz"))
-	end)
-
-	it("expect with no arguments", function()
-		t:expect("foo", "returnz")
-
-		assert.equal("returnz", t.foo())
-	end)
-
-	it("thenAnswer", function()
-		when(t.foo("bar")).thenAnswer("baz")
-
-		assert.equal("baz", t.foo("bar"))
-	end)
-
-	it("thenAnswer with no arg", function()
-		when(t.foo()).thenAnswer("baz")
-
-		assert.equal("baz", t.foo())
-	end)
-
-	it("thenAnswer cleans verify", function()
-		when(t.foo()).thenAnswer("baz")
-
-		assert.has_error(function() verify(t.foo()) end)
-	end)
-
-	it("thenAnswer with table arg", function()
-		local variable = {name = "var"}
-
-		when(t.foo()).thenAnswer(variable)
-
-		assert.equal(variable, t.foo())
-	end)
-
-	it("thenAnswer return nil", function()
-		when(t.foo()).thenAnswer(nil)
-
-		assert.falsy(t.foo())
-	end)
-
-	it("when with anyType", function()
-		when(t.foo(any())).thenAnswer("boo")
-
-		assert.equal("boo", t.foo("baz"))
-	end)
-
-	it("when with two anyTypes", function()
-		when(t.foo(any(), any())).thenAnswer("boo")
-
-		assert.equal("boo", t.foo("baz", 5))
-	end)
-
-	it("when with anyType and real argument", function()
-		when(t.foo(any(), 5)).thenAnswer("boo")
-
-		assert.equal("boo", t.foo("baz", 5))
-	end)
-
-	it("when with self", function()
-		when(t.foo(t)).thenAnswer("boo")
-
-		assert.equal("boo", t.foo(t))
-	end)
-
-	it("getName return name", function()
-		local namedMock = mockagne.getMock("mockname")
-
-		assert.equal("mockname", namedMock:getName())
-	end)
-
-	it("getName return empty string when no name set", function()
-		assert.equal("", t:getName())
+		it("getName return empty string when no name set", function()
+			assert.equal("", t:getName())
+		end)
 	end)
 
 	it("two mocks are independent", function()
@@ -252,14 +274,6 @@ describe("When testing mockagne", function ()
 		assert.has_error(function() verify(t.foo()) end)
 	end)
 
-	it("thenAnswer with vararg return", function()
-		when(t.foo("bar")).thenAnswer("foo", "bar", "baz")
-
-		a, b, c = t.foo("bar")
-		assert.equal("foo", a)
-		assert.equal("bar", b)
-		assert.equal("baz", c)
-	end)
 
 	--[[
 	function test_thenAnswer_withSelf()

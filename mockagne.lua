@@ -89,11 +89,7 @@ local function getReturn(self, method, ...)
     for i = 1, #self.expected_returns do
         local candidate = self.expected_returns[i]
         if (candidate.mock == self and candidate.key == method and compareArgs(args, candidate.args)) then
-            if candidate.returnvalue.isPacked then
-                return unpack(candidate.returnvalue.args)
-            else
-                return candidate.returnvalue
-            end
+            return unpack(candidate.returnvalue)
         end
     end
     return nil
@@ -143,10 +139,7 @@ local function expect(self, method, returnvalue, ...)
 end
 
 local function thenAnswer(...)
-    local answer = {}
-    answer.isPacked = true
-    answer.args = arg
-    latest_invoke.mock:expect(latest_invoke.key, answer, unpack(latest_invoke.args))
+    latest_invoke.mock:expect(latest_invoke.key, arg, unpack(latest_invoke.args))
     remove_invoke(latest_invoke.mock, latest_invoke.key, unpack(latest_invoke.args))
 end
 
