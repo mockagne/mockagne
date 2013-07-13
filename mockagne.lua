@@ -35,7 +35,6 @@ local function deepcompare(t1,t2,ignore_mt)
     return true
 end
 
-
 local function compareToAny(any, value)
     if not any.itemType then return true end
     if type(value) == "table" and value.any and any.itemType == value.itemType then return true end
@@ -83,6 +82,13 @@ local function compareArgs(args1, args2, strict)
     return true, anysUsed
 end
 
+local function matchesNilledField(self, field)
+    for i, nilField in ipairs(self.nilledFields) do
+        if nilField == field then return true end
+    end
+    return false
+end
+
 local function getReturn(self, method, ...)
     for i = 1, #self.expected_returns do
         local candidate = self.expected_returns[i]
@@ -104,6 +110,7 @@ local function find_invoke(mock, method, expected_call_arguments, strict)
 end
 
 local function capture(reftable, refkey)
+    if matchesNilledField(reftable, refkey) then return nil end
     return function(...)
         local args = {...}
 
@@ -141,6 +148,10 @@ end
 
 local function getName(self)
     return self.mockname
+end
+
+local function setNil(self, field)
+    self.nilledFields[#self.nilledFields + 1] = field
 end
 
 local function describeArgs(mock, args)
@@ -204,7 +215,9 @@ function M.getMock(name)
         stored_calls = {},
         expected_returns = {},
         expect = expect,
-        getName = getName
+        getName = getName,
+        nilledFields = {},
+        setNil = setNil
     }
 
     setmetatable(mock, { __index = capture })

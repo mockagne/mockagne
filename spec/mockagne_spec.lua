@@ -274,6 +274,16 @@ describe("When testing mockagne", function ()
 		assert.has_error(function() verify(t.foo()) end)
 	end)
 
+	describe("with primitive fields", function()
+		it("allow setting mock fields with values", function()
+			t.foo = 5
+			assert.equals(5, t.foo)
+		end)
+		it("allow setting mock field to nil", function()
+			t:setNil("foo")
+			assert.falsy(t.foo)
+		end)
+	end)
 
 	--[[
 	function test_thenAnswer_withSelf()
