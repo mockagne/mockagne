@@ -1,7 +1,7 @@
 mockagne
 ========
 
-Fully dynamic mocking for Lua.
+Fully dynamic mocking for Lua. Create mock objects with ease, teach them to return values and verify their invocations.
 
 ## Usage
 ### Creating and using mocks
@@ -39,6 +39,19 @@ If you want a call to `t.foo()` to return a value, you can teach the mock with:
 
 Otherwise calls to mock methods will return `nil`.
 
-### Find out more
-For more examples, refer to `test.lua` that comes with mockagne and is used to unit test it.
+### More examples
+For more examples, refer to `mockagne_spec.lua` that comes with. It contains all unit tests used to exercise mockagnes all features.
 
+## Installation
+
+Easiest way to install `mockagne` is through `luarocks`. Just run
+
+    luarocks install mockagne
+
+For manual installation, just add `mockagne.lua` to your `package.path`.
+
+## More information
+
+_Mockagne_ is written by Janne Sinivirta and Marko Pukari. It was created to help with testing of our mobile games written in Lua.
+
+_Mockagne_ name is a cross between _mock_ and _champagne_, like it's Java big brother _mockito_. We are great fans of _mockito_ and mockagne is heavily based on _mockito_'s DSL.
