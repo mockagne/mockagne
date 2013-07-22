@@ -137,7 +137,6 @@ end
 
 local function expect(self, method, returnvalue, ...)
     local expectation = { mock = self, key = method, returnvalue = returnvalue, args = {...} }
-
     table.insert(self.expected_returns, expectation)
 end
 
@@ -205,6 +204,9 @@ function M.verify_no_call(mockinvoke)
     end
 end
 
+local function niller(t, key, value)
+end
+
 --- Returns a mock instance
 -- @param name name for the mock (optional)
 -- @return mock instance
@@ -219,8 +221,17 @@ function M.getMock(name)
         nilledFields = {},
         setNil = setNil
     }
-
-    setmetatable(mock, { __index = capture })
+    local original_mock = mock
+    setmetatable(mock, 
+        { __index = capture,
+        __newindex = function(t, key, value)
+            if value == nil then
+                t.nilledFields[#t.nilledFields + 1] = key
+            else
+                rawset(t, key, value)
+            end
+        end
+         })
 
     return mock
 end

@@ -1,7 +1,7 @@
 package = "Mockagne"
-version = "1.0-1"
+version = "1.0-2"
 source = {
-   url = "https://github.com/PunchWolf/mockagne/releases/download/v.1.0.1/mockagne-1.0.tar.gz",
+   url = "https://github.com/PunchWolf/mockagne/releases/download/v.1.0.2/mockagne-1.0.tar.gz",
    dir = "mockagne-1.0"
 }
 description = {

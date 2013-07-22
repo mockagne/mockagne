@@ -280,7 +280,7 @@ describe("When testing mockagne", function ()
 			assert.equals(5, t.foo)
 		end)
 		it("allow setting mock field to nil", function()
-			t:setNil("foo")
+			t.foo = nil
 			assert.falsy(t.foo)
 		end)
 	end)
