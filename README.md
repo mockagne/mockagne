@@ -52,6 +52,7 @@ For manual installation, just add `mockagne.lua` to your `package.path`.
 
 ## More information
 
-_Mockagne_ is written by Janne Sinivirta and Marko Pukari. It was created to help with testing of our mobile games written in Lua.
+_Mockagne_ was originally written by Janne Sinivirta and Marko Pukari. It was created to help with testing of our mobile games written in Lua. It is now maintained by 
+Sebastian Bär.
 
 _Mockagne_ name is a cross between _mock_ and _champagne_, like it's Java big brother _mockito_. We are great fans of _mockito_ and mockagne is heavily based on _mockito_'s DSL.
