@@ -4,7 +4,7 @@
 -- This code is distributed under the terms of the MIT license.
 -- 
 -- Copyright (c) 2013 Punch Wolf Game Studios.
--- Copyright (c) 2019 Exasol.
+-- Copyright (c) 2020 Exasol.
 -- 
 -- For details please visit the project page: https://github.com/mockagne/mockagne
 --
