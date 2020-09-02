@@ -1,0 +1,22 @@
+dist: focal
+
+language: c
+
+sudo: required
+
+os: linux
+
+env:
+    - LUA_VERSION=5.1
+    - LUA_VERSION=5.2
+    - LUA_VERSION=5.3
+
+before_script:
+    - sudo apt-get -y install lua$LUA_VERSION
+    - sudo apt-get -y install liblua$LUA_VERSION-dev
+    - sudo apt-get -y install luarocks
+    - sudo luarocks install busted
+
+script:
+    - sudo luarocks make
+    - busted test

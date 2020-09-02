@@ -1,70 +1,39 @@
-mockagne
-========
+# mockagne - Mocking Framework for Lua
 
-Fully dynamic mocking for Lua. Create mock objects with ease, teach them to return values and verify their invocations.
+`mockagne` is a fully dynamic mocking framework that is designed to be a Lua variant of the famous Java framework [mockito](https://site.mockito.org/).
 
-## Usage
-### Creating and using mocks
-Start by requiring mockagne and creating some local function references for better readability:
+## In a Nutshell
 
 ```lua
-local mockagne = require "mockagne"
-
-local when = mockagne.when
-local any = mockagne.any
-local verify = mockagne.verify
+local mockagne = require("mockagne")
+local mock = mockagne.getMock()
+mockagne.when(mock.say(mockagne.any())).thenAnswer("Hello world")
+-- ...
+mock.ask("You name?")
+mockagne.verify(mock.ask("You name?"))
 ```
 
-Then just create a mock instance for you:
+## Information for Users
 
-```lua
-t = mockagne.getMock()
-```
+* [User Guide](doc/user_guide/user_guide.md)
 
-Then you can invoke anything on the mock instance. Like:
+## Dependencies
 
-```lua
-t.foo()
-```
+### Runtime Dependencies
 
-### Verifying calls to mocks
-After your test has executed, you might be interested if a specific function on a mock was called. For example, to check if function `foo()` was call, you would simply say:
+`mockagne` is a single-file pure-Lua module with no other runtime dependencies than Lua 5.1 or later.
 
-```lua
-verify(t.foo())
-```
+### Test Dependencies
 
-Same works with parameters:
+| Dependency                               | Purpose                                                | License                       |
+|------------------------------------------|--------------------------------------------------------|-------------------------------|
+| [busted][busted]                         | Unit testing framework                                 | MIT License        |
 
-```lua
-t.foo("bar")
-verify(t.foo("bar"))
-```
+[busted]: https://github.com/Olivine-Labs/busted
 
-### Returning values from mocks
-If you want a call to `t.foo()` to return a value, you can teach the mock with:
+### License
 
-```lua
-when(t.foo("bar")).thenAnswer("baz")
-print(t.foo("bar"))   -- this will print "baz"
-```
+Lua is Open Source, distributed under the terms of the [MIT license](License).
 
-Otherwise calls to mock methods will return `nil`.
-
-### More examples
-For more examples, refer to [`mockagne_spec.lua`](spec/mockagne_spec.lua) that comes with. It contains all unit tests used to exercise mockagnes all features.
-
-## Installation
-
-Easiest way to install `mockagne` is through `luarocks`. Just run
-
-    luarocks install mockagne
-
-For manual installation, just add `mockagne.lua` to your `package.path`.
-
-## More information
-
-_Mockagne_ was originally written by Janne Sinivirta and Marko Pukari. It was created to help with testing of our mobile games written in Lua. It is now maintained by 
-Sebastian Bär.
-
-_Mockagne_ name is a cross between _mock_ and _champagne_, like it's Java big brother _mockito_. We are great fans of _mockito_ and mockagne is heavily based on _mockito_'s DSL.
+Copyright (c) 2013 Punch Wolf Game Studios.
+Copyright (c) 2019 [Exasol](https://www.exasol.com).

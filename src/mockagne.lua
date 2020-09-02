@@ -1,11 +1,20 @@
---- Mockagne - Lua Mock Library
--- https://github.com/PunchWolf/mockagne
+---
+-- Mockagne - Lua Mock Library
 --
--- @copyright PunchWolf
--- @author Janne Sinivirta
--- @author Marko Pukari
+-- This code is distributed under the terms of the MIT license.
+-- 
+-- Copyright (c) 2013 Punch Wolf Game Studios.
+-- Copyright (c) 2019 Exasol.
+-- 
+-- For details please visit the project page: https://github.com/mockagne/mockagne
+--
+local M = {
+    VERSION = "1.0.2"
+}
 
-local M = {}
+-- Compatibility fix: from Lua 5.3 on 'unpack' does not exist in the global scope
+-- anymore but was moved into 'table.unpack'.
+local unpack = table.unpack or _G.unpack
 
 local latest_invoke = {}
 
