@@ -1,4 +1,5 @@
 # mockagne - Mocking Framework for Lua
+[![Build Status](https://travis-ci.org/mockagne/mockagne.svg?branch=master)](https://travis-ci.org/mockagne/mockagne)
 
 `mockagne` is a fully dynamic mocking framework that is designed to be a Lua variant of the famous Java framework [mockito](https://site.mockito.org/).
 
