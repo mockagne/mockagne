@@ -1,4 +1,4 @@
-# mockagne 1.0.2, released 2020-09-03
+# mockagne 1.0.2, released 2020-09-04
  
 Code name: Resurrection
  
