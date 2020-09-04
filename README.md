@@ -1,4 +1,5 @@
 # mockagne - Mocking Framework for Lua
+[![Build Status](https://travis-ci.org/mockagne/mockagne.svg?branch=master)](https://travis-ci.org/mockagne/mockagne)
 
 `mockagne` is a fully dynamic mocking framework that is designed to be a Lua variant of the famous Java framework [mockito](https://site.mockito.org/).
 
@@ -33,7 +34,7 @@ mockagne.verify(mock.ask("You name?"))
 
 ### License
 
-Lua is Open Source, distributed under the terms of the [MIT license](License).
+`mockagne` is Open Source, distributed under the terms of the [MIT license](License).
 
 Copyright (c) 2013 Punch Wolf Game Studios.
 Copyright (c) 2020 [Exasol](https://www.exasol.com).
