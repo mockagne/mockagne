@@ -9,8 +9,8 @@ local mockagne = require("mockagne")
 local mock = mockagne.getMock()
 mockagne.when(mock.say(mockagne.any())).thenAnswer("Hello world")
 -- ...
-mock.ask("You name?")
-mockagne.verify(mock.ask("You name?"))
+mock.ask("What's your name?")
+mockagne.verify(mock.ask("What's your name?"))
 ```
 
 ## Information for Users
