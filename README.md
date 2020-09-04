@@ -34,7 +34,7 @@ mockagne.verify(mock.ask("You name?"))
 
 ### License
 
-Lua is Open Source, distributed under the terms of the [MIT license](License).
+`mockagne` is Open Source, distributed under the terms of the [MIT license](License).
 
 Copyright (c) 2013 Punch Wolf Game Studios.
 Copyright (c) 2020 [Exasol](https://www.exasol.com).
