@@ -2,7 +2,7 @@ package = "Mockagne"
 version = "1.0-2"
 
 source = {
-   url = "https://github.com/PunchWolf/mockagne",
+   url = "git://github.com/mockagne/mockagne",
    tag = "1.0.2"
 }
 
