@@ -1,4 +1,4 @@
-# User Guid &mdash; `mockagne`
+# User Guide &mdash; `mockagne`
 
 ## Introduction
 
