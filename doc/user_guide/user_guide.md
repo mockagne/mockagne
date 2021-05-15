@@ -56,7 +56,7 @@ print(t.foo("bar"))   -- this will print "baz"
 Otherwise calls to mock methods will return `nil`.
 
 ### More examples
-For more examples, refer to [`mockagne_spec.lua`](spec/mockagne_spec.lua) that comes with. It contains all unit tests used to exercise mockagnes all features.
+For more examples, refer to [`mockagne_spec.lua`](../../test/mockagne_spec.lua) that comes with. It contains all unit tests used to exercise mockagnes all features.
 
 ## Installation
 
