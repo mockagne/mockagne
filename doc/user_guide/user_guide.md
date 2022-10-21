@@ -25,7 +25,13 @@ Then just create a mock instance for you:
 t = mockagne.getMock()
 ```
 
-Then you can invoke anything on the mock instance. Like:
+Alternatively you can give your mock a speaking name, which comes in very handy should you need to debug test with mocks. Remember that Lua does not keep type information, so if you mock for example a the products of an object factory you will have a hard time telling which mock got instanciated &mdash; unless of course you assigned a clear name which shows up in your debugger.
+
+```lua
+t = mockagne.getMock("My mocks speaking name")
+```
+
+Once you got the mock instance, you can invoke anything on the mock as if it was the real thing. Like:
 
 ```lua
 t.foo()
